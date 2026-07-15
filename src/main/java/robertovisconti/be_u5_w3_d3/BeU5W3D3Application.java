@@ -2,13 +2,14 @@ package robertovisconti.be_u5_w3_d3;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import robertovisconti.be_u5_w3_d3.Composite.Libro;
-import robertovisconti.be_u5_w3_d3.Composite.Pagina;
-import robertovisconti.be_u5_w3_d3.Composite.Sezione;
 import robertovisconti.be_u5_w3_d3.adapter.DataSource;
 import robertovisconti.be_u5_w3_d3.adapter.Info;
 import robertovisconti.be_u5_w3_d3.adapter.InfoAdapter;
 import robertovisconti.be_u5_w3_d3.adapter.UserData;
+import robertovisconti.be_u5_w3_d3.chain.*;
+import robertovisconti.be_u5_w3_d3.composite.Libro;
+import robertovisconti.be_u5_w3_d3.composite.Pagina;
+import robertovisconti.be_u5_w3_d3.composite.Sezione;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -73,13 +74,34 @@ public class BeU5W3D3Application {
 
         System.out.println("Numero totale di pagine del libro: " + libro.numeroTotPagine());
         System.out.println("Numero pagine nel capitolo 1: " + sezionePrincipale.getNumeroPagine());
-        System.out.println("Numero pagina:");
+        System.out.println("STAMPA PAGINA");
         p3.stampa();
-        System.out.println("Stampa sezione:");
+        System.out.println("STAMPA SEZIONE");
         sottoSezione1.stampa();
-        System.out.println("Stampa libro:");
+        System.out.println("STAMPA LIBRO");
         libro.stampaLibro();
 
+
+        // ******************************** CHAIN OF RESPONSIBILITY ********************************
+        Ufficiale tenente = new Tenente();
+        Ufficiale capitano = new Capitano();
+        Ufficiale maggiore = new Maggiore();
+        Ufficiale colonnello = new Colonnello();
+        Ufficiale generale = new Generale();
+
+
+        // CATENA
+        tenente.setResponsabile(capitano);
+        capitano.setResponsabile(maggiore);
+        maggiore.setResponsabile(colonnello);
+        colonnello.setResponsabile(generale);
+
+        System.out.println("CATENA: ");
+        tenente.controlloStipendio(1000);
+        tenente.controlloStipendio(2000);
+        tenente.controlloStipendio(3000);
+        tenente.controlloStipendio(4000);
+        tenente.controlloStipendio(6000);
     }
 
 }
